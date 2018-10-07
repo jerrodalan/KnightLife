@@ -1,4 +1,4 @@
-import { Filter, Where, repository } from '@loopback/repository';
+import { Filter, Where, repository, FilterBuilder } from '@loopback/repository';
 import {
   post,
   param,
@@ -45,20 +45,20 @@ export class UsersController {
   }
 
   @get('/users/{id}')
-  async findById(@param.path.number('id') id: number): Promise<Users> {
+  async findById(@param.path.string('id') id: string): Promise<Users> {
     return await this.usersRepository.findById(id);
   }
 
   @patch('/users/{id}')
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody() Users: Users
   ): Promise<boolean> {
     return await this.usersRepository.updateById(id, Users);
   }
 
   @del('/users/{id}')
-  async deleteById(@param.path.number('id') id: number): Promise<boolean> {
+  async deleteById(@param.path.string('id') id: string): Promise<boolean> {
     return await this.usersRepository.deleteById(id);
   }
 }

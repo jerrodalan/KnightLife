@@ -1,7 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from '@loopback/repository';
+import { UserProfile } from '@loopback/authentication';
 
 @model()
-export class Users extends Entity {
+export class Users extends Entity implements UserProfile {
   @property({
     type: 'string',
     required: true,
@@ -9,11 +10,11 @@ export class Users extends Entity {
   Username: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
     required: true,
   })
-  id: number;
+  id: string;
 
   @property({
     type: 'string',
