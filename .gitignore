@@ -63,3 +63,6 @@ api-docs/
 # Transpiled JavaScript files from Typescript
 dist/
 dist8/
+.prettierrc
+.prettierignore
+.npmrc
