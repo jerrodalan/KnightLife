@@ -1,10 +1,14 @@
 {
   "ids": {
-    "Users": 2
+    "Users": 2,
+    "Bar": 2
   },
   "models": {
     "Users": {
       "1": "{\"Username\":\"jerrodcrook\",\"id\":1,\"Email\":\"jerrodalancrook@gmail.com\",\"Password\":\"passw0rd\"}"
+    },
+    "Bar": {
+      "1": "{\"id\":1,\"Name\":\"Puzzles\",\"Address\":\"Ted Mosbys Apartment\",\"PhoneNumber\":\"3034761022\",\"Website\":\"www.howimetyourmother.com\",\"Description\":\"Puzzle, why is it called Puzzles? That's the Puzzle!\",\"Culture\":\"Chill\"}"
     }
   }
 }
