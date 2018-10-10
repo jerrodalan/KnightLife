@@ -1,7 +1,8 @@
 {
   "ids": {
-    "Users": 2,
-    "Bar": 2
+    "Users": 3,
+    "Bar": 2,
+    "Profile": 2
   },
   "models": {
     "Users": {
@@ -9,6 +10,9 @@
     },
     "Bar": {
       "1": "{\"id\":1,\"Name\":\"Puzzles\",\"Address\":\"Ted Mosbys Apartment\",\"PhoneNumber\":\"3034761022\",\"Website\":\"www.howimetyourmother.com\",\"Description\":\"Puzzle, why is it called Puzzles? That's the Puzzle!\",\"Culture\":\"Chill\"}"
+    },
+    "Profile": {
+      "1": "{\"id\":1,\"Gender\":\"Male\",\"Birthday\":\"February 22, 1996\",\"PreferredDrink\":\"Whiskey\"}"
     }
   }
 }
