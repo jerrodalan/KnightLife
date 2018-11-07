@@ -49,14 +49,16 @@
   "dependencies": {
     "@loopback/authentication": "0.11.7",
     "@loopback/boot": "0.12.6",
+    "@loopback/cli": "^0.22.3",
     "@loopback/context": "0.12.6",
     "@loopback/core": "0.11.6",
     "@loopback/dist-util": "0.3.6",
     "@loopback/openapi-v3": "0.12.6",
     "@loopback/repository": "0.15.1",
     "@loopback/repository-json-schema": "0.10.7",
-    "@loopback/rest": "0.19.6",
+    "@loopback/rest": "^0.20.0",
     "@loopback/service-proxy": "0.8.0",
+    "loopback-connector-mongodb": "^3.9.1",
     "passport": "0.4.0",
     "passport-http": "0.3.0"
   },
