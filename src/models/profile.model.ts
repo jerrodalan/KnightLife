@@ -1,13 +1,14 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from '@loopback/repository';
+import { ObjectId } from 'bson';
 
 @model()
 export class Profile extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
     required: true,
   })
-  id: number;
+  id: ObjectId;
 
   @property({
     type: 'string',

@@ -12,6 +12,7 @@ import { BarsRepository } from '../repositories';
 import { authenticate } from '@loopback/authentication';
 import { inject } from '@loopback/core';
 import { MongoDsDataSource } from '../datasources';
+import { ObjectId } from 'bson';
 
 export class BarsController {
   constructor(
@@ -89,7 +90,7 @@ export class BarsController {
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<Bar> {
+  async findById(@param.path.number('id') id: ObjectId): Promise<Bar> {
     return await this.barsRepository.findById(id);
   }
 
@@ -103,7 +104,7 @@ export class BarsController {
     },
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: ObjectId,
     @requestBody() bars: Bar
   ): Promise<boolean> {
     return await this.barsRepository.updateById(id, bars);
@@ -118,7 +119,7 @@ export class BarsController {
       },
     },
   })
-  async deleteById(@param.path.number('id') id: number): Promise<boolean> {
+  async deleteById(@param.path.number('id') id: ObjectId): Promise<boolean> {
     return await this.barsRepository.deleteById(id);
   }
 }

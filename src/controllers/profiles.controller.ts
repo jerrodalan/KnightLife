@@ -10,6 +10,7 @@ import {
 import { Profile } from '../models';
 import { ProfilesRepository } from '../repositories';
 import { authenticate } from '@loopback/authentication';
+import { ObjectId } from 'bson';
 
 export class ProfilesController {
   constructor(
@@ -87,7 +88,7 @@ export class ProfilesController {
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<Profile> {
+  async findById(@param.path.number('id') id: ObjectId): Promise<Profile> {
     return await this.profilesRepository.findById(id);
   }
 
@@ -101,7 +102,7 @@ export class ProfilesController {
     },
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: ObjectId,
     @requestBody() profiles: Profile
   ): Promise<boolean> {
     return await this.profilesRepository.updateById(id, profiles);
@@ -116,7 +117,7 @@ export class ProfilesController {
       },
     },
   })
-  async deleteById(@param.path.number('id') id: number): Promise<boolean> {
+  async deleteById(@param.path.number('id') id: ObjectId): Promise<boolean> {
     return await this.profilesRepository.deleteById(id);
   }
 }
