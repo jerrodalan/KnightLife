@@ -10,6 +10,7 @@ import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import { UsersRepository } from '../repositories';
 import { Users } from '../models';
 import { ObjectId } from 'bson';
+import { compare } from 'bcrypt'
 
 export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
   constructor(
@@ -55,7 +56,7 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
   ) => {
 
     this.findByUsername(username).then((result: Users) => {
-      if (result !== null && result.Password === password) {
+      if (result !== null && this.comparePassword(password, result.Password)) {
         cb(null, result);
       }
       else {
@@ -72,5 +73,9 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
 
   async findById(id: ObjectId): Promise<Users> {
     return await this.usersRepository.findById(id);
+  }
+
+  private comparePassword(password: string, hash: string): Promise<boolean> {
+    return compare(password, hash);
   }
 }

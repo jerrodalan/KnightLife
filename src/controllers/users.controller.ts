@@ -17,12 +17,7 @@ export class UsersController {
     @repository(UsersRepository) public usersRepository: UsersRepository,
   ) { }
 
-  @post('/users')
-  async create(@requestBody() Users: Users)
-    : Promise<Users> {
-    return await this.usersRepository.create(Users);
-  }
-
+  @authenticate('JWT')
   @get('/users/count')
   async count(@param.query.string('where') where?: Where): Promise<number> {
     return await this.usersRepository.count(where);
@@ -33,31 +28,5 @@ export class UsersController {
   async find(@param.query.string('filter') filter?: Filter)
     : Promise<Users[]> {
     return await this.usersRepository.find(filter);
-  }
-
-  @patch('/users')
-  async updateAll(
-    @requestBody() Users: Users,
-    @param.query.string('where') where?: Where
-  ): Promise<number> {
-    return await this.usersRepository.updateAll(Users, where);
-  }
-
-  @get('/users/{id}')
-  async findById(@param.path.string('id') id: ObjectId): Promise<Users> {
-    return await this.usersRepository.findById(id);
-  }
-
-  @patch('/users/{id}')
-  async updateById(
-    @param.path.string('id') id: ObjectId,
-    @requestBody() Users: Users
-  ): Promise<boolean> {
-    return await this.usersRepository.updateById(id, Users);
-  }
-
-  @del('/users/{id}')
-  async deleteById(@param.path.string('id') id: ObjectId): Promise<boolean> {
-    return await this.usersRepository.deleteById(id);
   }
 }

@@ -19,6 +19,7 @@ export class BarsController {
     @repository(BarsRepository) public barsRepository: BarsRepository
   ) { }
 
+  @authenticate('JWT')
   @post('/bars', {
     responses: {
       '200': {
@@ -32,6 +33,7 @@ export class BarsController {
     return await this.barsRepository.create(bars);
   }
 
+  @authenticate('JWT')
   @get('/bars/count', {
     responses: {
       '200': {
@@ -62,6 +64,7 @@ export class BarsController {
     return await this.barsRepository.find(filter);
   }
 
+  @authenticate('JWT')
   @patch('/bars', {
     responses: {
       '200': {
@@ -77,6 +80,7 @@ export class BarsController {
     return await this.barsRepository.updateAll(bars, where);
   }
 
+  @authenticate('JWT')
   @get('/bars/{id}', {
     responses: {
       '200': {
@@ -89,6 +93,7 @@ export class BarsController {
     return await this.barsRepository.findById(id);
   }
 
+  @authenticate('JWT')
   @patch('/bars/{id}', {
     responses: {
       '200': {
@@ -104,6 +109,7 @@ export class BarsController {
     return await this.barsRepository.updateById(id, bars);
   }
 
+  @authenticate('JWT')
   @del('/bars/{id}', {
     responses: {
       '200': {

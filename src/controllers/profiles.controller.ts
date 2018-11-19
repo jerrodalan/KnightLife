@@ -1,4 +1,4 @@
-import {Filter, Where, repository} from '@loopback/repository';
+import { Filter, Where, repository } from '@loopback/repository';
 import {
   post,
   param,
@@ -7,20 +7,22 @@ import {
   del,
   requestBody
 } from '@loopback/rest';
-import {Profile} from '../models';
-import {ProfilesRepository} from '../repositories';
+import { Profile } from '../models';
+import { ProfilesRepository } from '../repositories';
+import { authenticate } from '@loopback/authentication';
 
 export class ProfilesController {
   constructor(
     @repository(ProfilesRepository)
-    public profilesRepository : ProfilesRepository,
-  ) {}
+    public profilesRepository: ProfilesRepository,
+  ) { }
 
+  @authenticate('JWT')
   @post('/profiles', {
     responses: {
       '200': {
         description: 'Profile model instance',
-        content: {'application/json': {'x-ts-type': Profile}},
+        content: { 'application/json': { 'x-ts-type': Profile } },
       },
     },
   })
@@ -29,11 +31,12 @@ export class ProfilesController {
     return await this.profilesRepository.create(profiles);
   }
 
+  @authenticate('JWT')
   @get('/profiles/count', {
     responses: {
       '200': {
         description: 'Profile model count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: { 'application/json': { 'x-ts-type': Number } },
       },
     },
   })
@@ -41,13 +44,14 @@ export class ProfilesController {
     return await this.profilesRepository.count(where);
   }
 
+  @authenticate('JWT')
   @get('/profiles', {
     responses: {
       '200': {
         description: 'Array of Profile model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Profile}},
+            schema: { type: 'array', items: { 'x-ts-type': Profile } },
           },
         },
       },
@@ -58,11 +62,12 @@ export class ProfilesController {
     return await this.profilesRepository.find(filter);
   }
 
+  @authenticate('JWT')
   @patch('/profiles', {
     responses: {
       '200': {
         description: 'Profile PATCH success count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: { 'application/json': { 'x-ts-type': Number } },
       },
     },
   })
@@ -73,11 +78,12 @@ export class ProfilesController {
     return await this.profilesRepository.updateAll(profiles, where);
   }
 
+  @authenticate('JWT')
   @get('/profiles/{id}', {
     responses: {
       '200': {
         description: 'Profile model instance',
-        content: {'application/json': {'x-ts-type': Profile}},
+        content: { 'application/json': { 'x-ts-type': Profile } },
       },
     },
   })
@@ -85,11 +91,12 @@ export class ProfilesController {
     return await this.profilesRepository.findById(id);
   }
 
+  @authenticate('JWT')
   @patch('/profiles/{id}', {
     responses: {
       '200': {
         description: 'Profile PATCH success',
-        content: {'application/json': {'x-ts-type': Boolean}},
+        content: { 'application/json': { 'x-ts-type': Boolean } },
       },
     },
   })
@@ -100,11 +107,12 @@ export class ProfilesController {
     return await this.profilesRepository.updateById(id, profiles);
   }
 
+  @authenticate('JWT')
   @del('/profiles/{id}', {
     responses: {
       '200': {
         description: 'Profile DELETE success',
-        content: {'application/json': {'x-ts-type': Boolean}},
+        content: { 'application/json': { 'x-ts-type': Boolean } },
       },
     },
   })

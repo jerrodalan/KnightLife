@@ -9,11 +9,11 @@ import {
 import { inject } from '@loopback/core';
 import { AuthenticationBindings, authenticate } from '@loopback/authentication';
 import { sign } from "jsonwebtoken";
-import { Users } from '../models';
+import { Users, Register } from '../models';
 import { UsersRepository } from '../repositories';
 import { repository } from '@loopback/repository';
 import { ObjectId } from 'bson';
-import { Register } from '../models/register.model';
+import { hash } from 'bcrypt';
 
 export class AuthController {
   constructor(
@@ -39,8 +39,14 @@ export class AuthController {
 
   @post('/register')
   async register(@requestBody() register: Register) {
-    let user = <Users>{ id: new ObjectId, Username: register.Username, Password: register.Password, Email: register.Email };
-    this.usersRepository.create(user);
+    this.hashPassword(register.Password, 12).then((result) => {
+      let user = <Users>{ id: new ObjectId, Username: register.Username, Password: result, Email: register.Email };
+      this.usersRepository.create(user);
+    })
+  }
+
+  private hashPassword(password: string, rounds: number): Promise<string> {
+    return hash(password, rounds);
   }
 
 }
