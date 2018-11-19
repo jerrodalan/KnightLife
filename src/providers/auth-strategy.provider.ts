@@ -3,13 +3,13 @@ import { Filter, Where, repository, FilterBuilder } from '@loopback/repository';
 import { Strategy } from 'passport';
 import {
   AuthenticationBindings,
-  AuthenticationMetadata,
-  UserProfile,
+  AuthenticationMetadata
 } from '@loopback/authentication';
 import { BasicStrategy } from 'passport-http';
-import { Strategy as JWTStrategy, ExtractJwt, StrategyOptions, JwtFromRequestFunction } from 'passport-jwt';
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import { UsersRepository } from '../repositories';
 import { Users } from '../models';
+import { ObjectId } from 'bson';
 
 export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
   constructor(
@@ -51,12 +51,12 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
   verify = (
     username: string,
     password: string,
-    cb: (err: Error | null, user?: UserProfile | false) => void,
+    cb: (err: Error | null, user?: Users | false) => void,
   ) => {
 
     this.findByUsername(username).then((result: Users) => {
       if (result !== null && result.Password === password) {
-        cb(null, { id: result.id });
+        cb(null, result);
       }
       else {
         cb(null, false);
@@ -66,11 +66,11 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
 
   async findByUsername(username: string) {
     const filterBuilder = new FilterBuilder();
-    const temp = filterBuilder.where({ Username: username }).build();
-    return await this.usersRepository.findOne(temp);
+    const filter = filterBuilder.where({ Username: username }).build();
+    return await this.usersRepository.findOne(filter);
   }
 
-  async findById(id: string): Promise<Users> {
+  async findById(id: ObjectId): Promise<Users> {
     return await this.usersRepository.findById(id);
   }
 }

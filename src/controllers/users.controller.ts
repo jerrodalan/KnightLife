@@ -10,6 +10,7 @@ import {
 import { Users } from '../models';
 import { UsersRepository } from '../repositories';
 import { authenticate } from '@loopback/authentication';
+import { ObjectId } from 'bson';
 
 export class UsersController {
   constructor(
@@ -43,20 +44,20 @@ export class UsersController {
   }
 
   @get('/users/{id}')
-  async findById(@param.path.string('id') id: string): Promise<Users> {
+  async findById(@param.path.string('id') id: ObjectId): Promise<Users> {
     return await this.usersRepository.findById(id);
   }
 
   @patch('/users/{id}')
   async updateById(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: ObjectId,
     @requestBody() Users: Users
   ): Promise<boolean> {
     return await this.usersRepository.updateById(id, Users);
   }
 
   @del('/users/{id}')
-  async deleteById(@param.path.string('id') id: string): Promise<boolean> {
+  async deleteById(@param.path.string('id') id: ObjectId): Promise<boolean> {
     return await this.usersRepository.deleteById(id);
   }
 }

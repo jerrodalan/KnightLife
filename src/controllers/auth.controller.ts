@@ -7,12 +7,18 @@ import {
   requestBody
 } from '@loopback/rest';
 import { inject } from '@loopback/core';
-import { AuthenticationBindings, UserProfile, authenticate } from '@loopback/authentication';
+import { AuthenticationBindings, authenticate } from '@loopback/authentication';
 import { sign } from "jsonwebtoken";
+import { Users } from '../models';
+import { UsersRepository } from '../repositories';
+import { repository } from '@loopback/repository';
+import { ObjectId } from 'bson';
+import { Register } from '../models/register.model';
 
 export class AuthController {
   constructor(
-    @inject(AuthenticationBindings.CURRENT_USER, { optional: true }) private user: UserProfile
+    @repository(UsersRepository) public usersRepository: UsersRepository,
+    @inject(AuthenticationBindings.CURRENT_USER, { optional: true }) private user: Users
   ) { }
 
   @authenticate('BasicStrategy')
@@ -29,6 +35,12 @@ export class AuthController {
       expiresIn: '1h'
     });
     return await token;
+  }
+
+  @post('/register')
+  async register(@requestBody() register: Register) {
+    let user = <Users>{ id: new ObjectId, Username: register.Username, Password: register.Password, Email: register.Email };
+    this.usersRepository.create(user);
   }
 
 }

@@ -1,20 +1,12 @@
 import { Entity, model, property } from '@loopback/repository';
-import { ObjectId } from 'bson';
 
 @model()
-export class Users extends Entity {
+export class Register extends Entity {
   @property({
     type: 'string',
     required: true,
   })
   Username: string;
-
-  @property({
-    type: 'string',
-    id: true,
-    required: true
-  })
-  id: ObjectId;
 
   @property({
     type: 'string',
@@ -28,7 +20,7 @@ export class Users extends Entity {
   })
   Password: string;
 
-  constructor(data?: Partial<Users>) {
+  constructor(data?: Partial<Register>) {
     super(data);
   }
 }
