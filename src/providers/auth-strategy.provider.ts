@@ -7,6 +7,7 @@ import {
   UserProfile,
 } from '@loopback/authentication';
 import { BasicStrategy } from 'passport-http';
+import { Strategy as JWTStrategy, ExtractJwt, StrategyOptions, JwtFromRequestFunction } from 'passport-jwt';
 import { UsersRepository } from '../repositories';
 import { Users } from '../models';
 
@@ -17,6 +18,7 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
   ) { }
 
   value(): ValueOrPromise<Strategy | undefined> {
+    const self = this;
     // The function was not decorated, so we shouldn't attempt authentication
     if (!this.metadata) {
       return undefined;
@@ -25,6 +27,21 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
     const name = this.metadata.strategy;
     if (name === 'BasicStrategy') {
       return new BasicStrategy(this.verify);
+    }
+    else if (name === 'JWT') {
+      return new JWTStrategy({
+        secretOrKey: 'your_jwt_secret',
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+      }, function (jwtPayload, cb) {
+        return self.findById(jwtPayload.id).then((result: Users) => {
+          if (result) {
+            return cb(null, result);
+          }
+          else {
+            return cb(null, false);
+          }
+        })
+      });
     }
     else {
       return Promise.reject(`The strategy ${name} is not available.`);
@@ -37,9 +54,6 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
     cb: (err: Error | null, user?: UserProfile | false) => void,
   ) => {
 
-    //if (username === 'jerrodcrook') cb(null, { id: '1' });
-    // else cb(null, false);
-
     this.findByUsername(username).then((result: Users) => {
       if (result !== null && result.Password === password) {
         cb(null, { id: result.id });
@@ -48,14 +62,15 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
         cb(null, false);
       }
     });
-    // find user by name & password
-    // call cb(null, false) when user not found
-    // call cb(null, user) when user is authenticated
   }
 
   async findByUsername(username: string) {
     const filterBuilder = new FilterBuilder();
-    const filter = filterBuilder.fields('Username').where({ Username: username }).build();
-    return await this.usersRepository.findOne(filter);
+    const temp = filterBuilder.where({ Username: username }).build();
+    return await this.usersRepository.findOne(temp);
+  }
+
+  async findById(id: string): Promise<Users> {
+    return await this.usersRepository.findById(id);
   }
 }

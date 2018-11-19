@@ -5,7 +5,7 @@ import { MongoDsDataSource } from '../datasources';
 
 export class BarsRepository extends DefaultCrudRepository<Bar, typeof Bar.prototype.id>{
   constructor(
-    @inject('datasources.mongoDs') protected datasource: MongoDsDataSource, ) {
+    @inject('datasources.db') protected datasource: juggler.DataSource, ) {
     super(Bar, datasource);
   }
 }

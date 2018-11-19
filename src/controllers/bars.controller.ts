@@ -1,4 +1,4 @@
-import {Filter, Where, repository} from '@loopback/repository';
+import { Filter, Where, repository } from '@loopback/repository';
 import {
   post,
   param,
@@ -7,20 +7,23 @@ import {
   del,
   requestBody
 } from '@loopback/rest';
-import {Bar} from '../models';
-import {BarsRepository} from '../repositories';
+import { Bar } from '../models';
+import { BarsRepository } from '../repositories';
+import { authenticate } from '@loopback/authentication';
+import { inject } from '@loopback/core';
+import { MongoDsDataSource } from '../datasources';
 
 export class BarsController {
   constructor(
-    @repository(BarsRepository)
-    public barsRepository : BarsRepository,
-  ) {}
+    @inject('datasources.mongoDs') protected datasource: MongoDsDataSource,
+    @repository(BarsRepository) public barsRepository: BarsRepository
+  ) { }
 
   @post('/bars', {
     responses: {
       '200': {
         description: 'Bar model instance',
-        content: {'application/json': {'x-ts-type': Bar}},
+        content: { 'application/json': { 'x-ts-type': Bar } },
       },
     },
   })
@@ -33,7 +36,7 @@ export class BarsController {
     responses: {
       '200': {
         description: 'Bar model count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: { 'application/json': { 'x-ts-type': Number } },
       },
     },
   })
@@ -41,13 +44,14 @@ export class BarsController {
     return await this.barsRepository.count(where);
   }
 
+  @authenticate('JWT')
   @get('/bars', {
     responses: {
       '200': {
         description: 'Array of Bar model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Bar}},
+            schema: { type: 'array', items: { 'x-ts-type': Bar } },
           },
         },
       },
@@ -62,7 +66,7 @@ export class BarsController {
     responses: {
       '200': {
         description: 'Bar PATCH success count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: { 'application/json': { 'x-ts-type': Number } },
       },
     },
   })
@@ -77,7 +81,7 @@ export class BarsController {
     responses: {
       '200': {
         description: 'Bar model instance',
-        content: {'application/json': {'x-ts-type': Bar}},
+        content: { 'application/json': { 'x-ts-type': Bar } },
       },
     },
   })
@@ -89,7 +93,7 @@ export class BarsController {
     responses: {
       '200': {
         description: 'Bar PATCH success',
-        content: {'application/json': {'x-ts-type': Boolean}},
+        content: { 'application/json': { 'x-ts-type': Boolean } },
       },
     },
   })
@@ -104,7 +108,7 @@ export class BarsController {
     responses: {
       '200': {
         description: 'Bar DELETE success',
-        content: {'application/json': {'x-ts-type': Boolean}},
+        content: { 'application/json': { 'x-ts-type': Boolean } },
       },
     },
   })

@@ -9,12 +9,10 @@ import {
 } from '@loopback/rest';
 import { Users } from '../models';
 import { UsersRepository } from '../repositories';
-import { AuthenticationBindings, UserProfile, authenticate } from '@loopback/authentication';
-import { inject } from '@loopback/core';
+import { authenticate } from '@loopback/authentication';
 
 export class UsersController {
   constructor(
-    @inject(AuthenticationBindings.CURRENT_USER, { optional: true }) private user: UserProfile,
     @repository(UsersRepository) public usersRepository: UsersRepository,
   ) { }
 
@@ -29,7 +27,7 @@ export class UsersController {
     return await this.usersRepository.count(where);
   }
 
-  @authenticate('BasicStrategy')
+  @authenticate('JWT')
   @get('/users')
   async find(@param.query.string('filter') filter?: Filter)
     : Promise<Users[]> {
